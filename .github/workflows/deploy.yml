@@ -10,33 +10,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '18'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
 
-    - name: Install Yarn
-      run: npm install -g yarn
+      - name: Install Yarn
+        run: npm install -g yarn
 
-    - name: Install dependencies
-      run: yarn install
+      - name: Install dependencies
+        run: yarn install
 
-    - name: Build Strapi
-      run: yarn build
+      - name: Build Strapi
+        run: yarn build
 
-    - name: Deploy to EC2
-      uses: appleboy/ssh-action@v0.1.5
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ubuntu
-        key: ${{ secrets.EC2_SSH_KEY }}
-        script: |
-          cd /srv/strapi
-          git pull origin develop
-          yarn install
-          yarn build
-          pm2 restart strapi
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /srv/strapi
+            git pull origin develop
+            yarn install
+            yarn build
+            pm2 restart strapi
 
